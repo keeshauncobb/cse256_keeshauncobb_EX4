@@ -1,0 +1,38 @@
+import pytest
+from guess_the_word import select_random_word, display_word
+
+# Test if the random word is selected from the predefined list
+def test_select_random_word():
+    word = select_random_word()
+    assert word in ['python', 'java', 'ruby', 'javascript', 'swift', 'typescript']
+
+# Test the display_word function
+def test_display_word():
+    word = "python"
+    guessed_letters = {'p', 'y', 't'}
+    displayed = display_word(word, guessed_letters)
+    assert displayed == "pyt___"
+    
+    guessed_letters = {'p', 'y', 't', 'h', 'o', 'n'}
+    displayed = display_word(word, guessed_letters)
+    assert displayed == "python"
+
+# Test incorrect input (multiple characters or non-alphabet input)
+def test_invalid_input():
+    from io import StringIO
+    import sys
+    
+    # Capture output
+    backup = sys.stdout
+    sys.stdout = StringIO()
+    
+    word = "python"
+    guessed_letters = set()
+    
+    # Simulate an invalid guess (not a single letter)
+    invalid_input = "12"
+    print(f"Simulating invalid input: {invalid_input}")
+    guessed_letters.add(invalid_input)
+    
+    sys.stdout = backup  # Reset stdout
+    assert "Please enter a single letter." in sys.stdout.getvalue()
