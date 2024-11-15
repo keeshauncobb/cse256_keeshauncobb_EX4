@@ -1,0 +1,53 @@
+import random
+word_list = ['python', 'java', 'ruby', 'javascript', 'swift', 'typescript']
+
+def select_random_word():
+    """Selects a random word from the predefined list."""
+    return random.choice(word_list)
+
+def display_word(word, guessed_letters):
+    """Displays the word with guessed letters and underscores for unknown letters."""
+    return ''.join([letter if letter in guessed_letters else '_' for letter in word])
+
+# Keeshaun Cobb
+# cis256 Fall 2024
+# Programming Assignment 4
+def guess_the_word():
+    """The main function that runs the word-guessing game."""
+    word = select_random_word()
+    guessed_letters = set()
+    attempts = 6  # Number of allowed incorrect guesses
+    guessed_word = display_word(word, guessed_letters)
+    
+    print("Welcome to the Word Guessing Game!")
+    print(f"Your word: {guessed_word}")
+    
+    while attempts > 0:
+        guess = input("Guess a letter: ").lower()
+        
+        # Check if the input is valid (single alphabet character)
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You've already guessed that letter.")
+            continue
+        
+        guessed_letters.add(guess)
+        
+        # Check if guess is correct
+        if guess in word:
+            print("Good guess!")
+        else:
+            attempts -= 1
+            print(f"Incorrect guess! You have {attempts} attempts remaining.")
+        
+        guessed_word = display_word(word, guessed_letters)
+        print(f"Your word: {guessed_word}")
+        
+        if '_' not in guessed_word:
+            print("Congratulations! You've guessed the word.")
+            break
+    else:
+        print(f"Game over! The word was: {word}")
